@@ -16,6 +16,7 @@ public func configure(_ app: Application) throws {
     ), as: .psql)
 
     app.migrations.add(CreatePath())
+    app.migrations.add(CreateResource())
 
     // register routes
     try routes(app)

@@ -10,4 +10,5 @@ func routes(_ app: Application) throws {
         "Hello, world!"
     }
     try app.register(collection: PathController())
+    try app.register(collection: ResourceController())
 }
