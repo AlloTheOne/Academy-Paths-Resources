@@ -20,6 +20,10 @@ final class Path: Model, Content {
     @Field(key: "description")
     var description: String
     
+    // All the resources in this path.
+    @Children(for: \.$path)
+    var resources: [Resource]
+    
     init() { }
     
     init(id: UUID? = nil, name: String, description: String) {
