@@ -11,8 +11,9 @@ import Fluent
 struct ResourceController: RouteCollection {
     func boot(routes: Vapor.RoutesBuilder) throws {
         let resources = routes.grouped("resources")
+        
         resources.on(.GET, use: getAllResources)
-        resources.on(.GET, ":pathName", use: getResources)
+        resources.on(.GET, ":id", use: getResource)
         
         resources.on(.POST, use: createResource)
         resources.on(.DELETE, ":resourceID", use: deleteResource)
@@ -21,17 +22,25 @@ struct ResourceController: RouteCollection {
         resources.on(.PATCH, ":resourceID", use: updateSomeFieldInResource)
     }
     
+    // /resources?path={path name}
     func getAllResources(req: Request) async throws -> [Resource] {
-        try await Resource.query(on: req.db).all()
+        if let pathName = req.query[String.self, at: "path"] {
+            // Fetches all Resources with a specific path name
+            return try await Resource.query(on: req.db)
+                .join(Path.self, on: \Resource.$path.$id == \Path.$id)
+                .filter(Path.self, \.$name == pathName.capitalized)
+                .all()
+        } else {
+            return try await Resource.query(on: req.db).all()
+        }
     }
     
-    func getResources(req: Request) async throws -> [Resource] {
-        let pathName = req.parameters.get("pathName")!
-        // Fetches all Resources with a specific path name
-        return try await Resource.query(on: req.db)
-            .join(Path.self, on: \Resource.$path.$id == \Path.$id)
-            .filter(Path.self, \.$name == pathName.capitalized)
-            .all()
+    // /resources/{id}
+    func getResource(_ req: Request) async throws ->  Resource {
+        guard let resource = try await Resource.find(req.parameters.get("id"), on: req.db) else {
+            throw Abort(.notFound, reason: "resource not found")
+        }
+        return resource
     }
     
     func createResource(req: Request) async throws -> Resource {
