@@ -22,9 +22,9 @@ struct ResourceController: RouteCollection {
         resources.on(.PATCH, ":resourceID", use: updateSomeFieldInResource)
     }
     
-    // /resources?path={path name}
+    // /resources?pathName={path name}
     func getAllResources(req: Request) async throws -> [Resource] {
-        if let pathName = req.query[String.self, at: "path"] {
+        if let pathName = req.query[String.self, at: "pathName"] {
             // Fetches all Resources with a specific path name
             return try await Resource.query(on: req.db)
                 .join(Path.self, on: \Resource.$path.$id == \Path.$id)
