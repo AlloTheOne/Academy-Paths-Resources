@@ -52,7 +52,7 @@ struct ResourceController: RouteCollection {
     
     func deleteResource(req: Request) async throws -> HTTPStatus {
         guard let resource = try await Resource.find(req.parameters.get("resourceID"), on: req.db) else {
-            throw Abort(.notFound)
+            throw Abort(.notFound, reason: "resource not found")
         }
         try await resource.delete(on: req.db)
         return .ok
@@ -73,7 +73,7 @@ struct ResourceController: RouteCollection {
     
     func updateSomeFieldInResource(req: Request) async throws -> Resource {
         guard let resource = try await Resource.find(req.parameters.get("resourceID"), on: req.db) else {
-            throw Abort(.notFound)
+            throw Abort(.notFound, reason: "resource not found")
         }
         
         let newResource = try req.content.decode(ResourceRequestObject.self)
