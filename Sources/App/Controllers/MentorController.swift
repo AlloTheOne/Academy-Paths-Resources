@@ -72,7 +72,7 @@ struct MentorController: RouteCollection {
     }
     
     func updateSomeFieldInMentor(req: Request) async throws -> Mentor {
-        guard let mentor = try await Mentor.find(req.parameters.get("resourceID"), on: req.db) else {
+        guard let mentor = try await Mentor.find(req.parameters.get("mentorID"), on: req.db) else {
             throw Abort(.notFound, reason: "mentor not found")
         }
         

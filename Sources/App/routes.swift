@@ -3,12 +3,9 @@ import Vapor
 
 func routes(_ app: Application) throws {
     app.get { req async in
-        "It works!"
+        "For the complete documentation check out this link: https://app.swaggerhub.com/templates-docs/KHAWLAHALRASHED/Academy/1.0.0#/"
     }
-
-    app.get("hello") { req async -> String in
-        "Hello, world!"
-    }
+    
     try app.register(collection: PathController())
     try app.register(collection: ResourceController())
     try app.register(collection: MentorController())
