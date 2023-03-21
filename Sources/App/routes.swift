@@ -11,4 +11,5 @@ func routes(_ app: Application) throws {
     }
     try app.register(collection: PathController())
     try app.register(collection: ResourceController())
+    try app.register(collection: MentorController())
 }

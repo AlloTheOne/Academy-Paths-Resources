@@ -17,6 +17,7 @@ public func configure(_ app: Application) throws {
 
     app.migrations.add(CreatePath())
     app.migrations.add(CreateResource())
+    app.migrations.add(CreateMentor())
 
     // register routes
     try routes(app)
