@@ -24,6 +24,10 @@ final class Path: Model, Content {
     @Children(for: \.$path)
     var resources: [Resource]
     
+    // All the Mentors in this path.
+    @Children(for: \.$path)
+    var mentors: [Mentor]
+    
     init() { }
     
     init(id: UUID? = nil, name: String, description: String) {

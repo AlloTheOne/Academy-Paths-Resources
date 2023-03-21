@@ -17,7 +17,7 @@ struct PathController: RouteCollection {
     
     // get req - paths route
     func index(req: Request) throws -> EventLoopFuture<[Path]> {
-        return Path.query(on: req.db).with(\.$resources).all()
+        return Path.query(on: req.db).with(\.$resources).with(\.$mentors).all()
     }
 
     
